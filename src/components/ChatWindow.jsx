@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 
 import {
-  Shirt,
   Sparkles,
   Palette,
   MessageSquare,
@@ -80,12 +79,12 @@ export default function ChatWindow() {
       >
         <div
           className="
-  flex-1
-  overflow-y-auto
-  pt-2
-  pb-6
-  px-4
-"
+            flex-1
+            overflow-y-auto
+            px-4
+            pb-6
+            pt-2
+          "
         >
           <ConversationLoader />
         </div>
@@ -113,13 +112,13 @@ export default function ChatWindow() {
       {/* Messages Area */}
       <div
         className="
-  custom-scrollbar
-  flex-1
-  overflow-y-auto
-  pt-2
-  pb-6
-  px-4
-"
+          custom-scrollbar
+          flex-1
+          overflow-y-auto
+          px-4
+          pb-6
+          pt-2
+        "
       >
         {messages.length === 0 ? (
           <div
@@ -137,6 +136,9 @@ export default function ChatWindow() {
             <div
               className="
                 mb-5
+                flex
+                items-center
+                justify-center
                 rounded-3xl
                 border
                 border-zinc-200
@@ -146,9 +148,15 @@ export default function ChatWindow() {
                 dark:bg-zinc-900
               "
             >
-              <Shirt
-                size={54}
-                className="text-zinc-900 dark:text-white"
+              <img
+                src="/logo-light.png"
+                alt="AskDrip"
+                className="block h-14 w-14 dark:hidden"
+              />
+              <img
+                src="/logo-dark.png"
+                alt="AskDrip"
+                className="hidden h-14 w-14 dark:block"
               />
             </div>
 
@@ -194,7 +202,7 @@ export default function ChatWindow() {
               "
             >
               <FeatureCard
-                icon={<Shirt size={20} />}
+                icon={<Sparkles size={20} />}
                 title="Outfit Ideas"
                 description="Complete outfit generation."
                 onClick={() => setEndpoint("outfit")}
@@ -283,8 +291,8 @@ export default function ChatWindow() {
               w-full
               max-w-5xl
               px-2
-              pt-4
               pb-0
+              pt-4
             "
           >
             <div
@@ -408,8 +416,8 @@ function ConversationLoader() {
         w-full
         max-w-5xl
         px-2
-        pt-4
         pb-4
+        pt-4
       "
     >
       {[...Array(6)].map((_, index) => {
@@ -449,8 +457,8 @@ function ConversationLoader() {
                 flex-col
                 ${
                   isUser
-                    ? "items-end max-w-[80%]"
-                    : "items-start w-full max-w-[92%]"
+                    ? "max-w-[80%] items-end"
+                    : "w-full max-w-[92%] items-start"
                 }
               `}
             >
