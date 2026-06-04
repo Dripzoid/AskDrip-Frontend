@@ -79,19 +79,13 @@ export default function ChatWindow() {
         "
       >
         <div
-          className={`
-            flex-1
-            overflow-y-auto
-            pt-2
-            pb-6
-            pr-4
-
-            ${
-              sidebarCollapsed
-                ? "pl-24 md:px-4"
-                : "px-4"
-            }
-          `}
+          className="
+  flex-1
+  overflow-y-auto
+  pt-2
+  pb-6
+  px-4
+"
         >
           <ConversationLoader />
         </div>
@@ -118,22 +112,14 @@ export default function ChatWindow() {
     >
       {/* Messages Area */}
       <div
-        className={`
-          custom-scrollbar
-
-          flex-1
-          overflow-y-auto
-
-          pt-2
-          pb-6
-          pr-4
-
-          ${
-            sidebarCollapsed
-              ? "pl-24 md:px-4"
-              : "px-4"
-          }
-        `}
+        className="
+  custom-scrollbar
+  flex-1
+  overflow-y-auto
+  pt-2
+  pb-6
+  px-4
+"
       >
         {messages.length === 0 ? (
           <div
