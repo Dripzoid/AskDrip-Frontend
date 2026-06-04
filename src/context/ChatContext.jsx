@@ -3,357 +3,207 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
-import { useAuth }
-  from "./AuthContext";
+import { useAuth } from "./AuthContext";
+import { useConversations } from "./ConversationContext";
+import { sendPrompt } from "../services/chatService";
+import { getMessages } from "../services/conversationService";
 
-import { useConversations }
-  from "./ConversationContext";
+const ChatContext = createContext();
 
-import { sendPrompt }
-  from "../services/chatService";
-
-import {
-  getMessages,
-} from "../services/conversationService";
-
-const ChatContext =
-  createContext();
-
-const generateTitle = (
-  text
-) => {
-  const cleaned = text
-    .trim()
-    .replace(/\s+/g, " ");
+const generateTitle = (text) => {
+  const cleaned = text.trim().replace(/\s+/g, " ");
 
   return cleaned
     .split(" ")
     .slice(0, 4)
-    .map(
-      (word) =>
-        word.charAt(0)
-          .toUpperCase() +
-        word.slice(1)
-    )
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 };
 
-export const ChatProvider = ({
-  children,
-}) => {
+export const ChatProvider = ({ children }) => {
+  const { user } = useAuth();
+
+  const [loading, setLoading] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [endpoint, setEndpoint] = useState("chat");
+
+  const suppressNextConversationLoadRef = useRef(false);
 
   const {
-    user,
-  } = useAuth();
+    conversations,
+    activeConversationId,
+    createConversation,
+    loadConversations,
+    setConversationLoading,
+    finishConversationLoading,
+  } = useConversations();
 
-  const [
-    loading,
-    setLoading,
-  ] = useState(false);
+  const activeConversation = useMemo(
+    () =>
+      conversations.find(
+        (chat) => chat.id === activeConversationId
+      ),
+    [conversations, activeConversationId]
+  );
 
-  const [
-    messages,
-    setMessages,
-  ] = useState([]);
-
-  const [
-    endpoint,
-    setEndpoint,
-  ] = useState("chat");
-
-const {
-  conversations,
-
-  activeConversationId,
-
-  createConversation,
-
-  loadConversations,
-
-  setConversationLoading,
-
-  finishConversationLoading,
-} = useConversations();
-
-  const activeConversation =
-    useMemo(
-      () =>
-        conversations.find(
-          (chat) =>
-            chat.id ===
-            activeConversationId
-        ),
-      [
-        conversations,
-        activeConversationId,
-      ]
-    );
-/* =========================
-   LOAD MESSAGES
-========================= */
-
-useEffect(() => {
-
-  const loadMessages =
-    async () => {
-
-      if (
-        !activeConversationId
-      ) {
+  /* =========================
+     LOAD MESSAGES
+  ========================= */
+  useEffect(() => {
+    const loadMessages = async () => {
+      if (!activeConversationId) {
         setMessages([]);
         finishConversationLoading();
         return;
       }
 
-      try {
-
-        setConversationLoading(
-          true
-        );
-
-        const response =
-          await getMessages(
-            activeConversationId
-          );
-
-        const incoming =
-          response.messages || [];
-
-        setMessages(
-          incoming
-        );
-
-      } catch (err) {
-
-        console.error(
-          "Failed to load messages:",
-          err
-        );
-
-      } finally {
-
+      if (suppressNextConversationLoadRef.current) {
+        suppressNextConversationLoadRef.current = false;
         finishConversationLoading();
-
+        return;
       }
 
+      try {
+        setConversationLoading(true);
+
+        const response = await getMessages(activeConversationId);
+        const incoming = response.messages || [];
+
+        setMessages(incoming);
+      } catch (err) {
+        console.error("Failed to load messages:", err);
+      } finally {
+        finishConversationLoading();
+      }
     };
 
-  loadMessages();
+    loadMessages();
+  }, [
+    activeConversationId,
+    setConversationLoading,
+    finishConversationLoading,
+  ]);
 
-}, [
-  activeConversationId
-]);
   /* =========================
      ADD MESSAGE
   ========================= */
-
-  const addMessage =
-    (message) => {
-
-      setMessages(
-        (prev) => [
-          ...prev,
-          message,
-        ]
-      );
-
-    };
+  const addMessage = (message) => {
+    setMessages((prev) => [...prev, message]);
+  };
 
   /* =========================
      SEND MESSAGE
   ========================= */
+  const sendMessage = async (
+    content,
+    selectedEndpoint = endpoint
+  ) => {
+    if (!content?.trim() || loading) {
+      return;
+    }
 
-const sendMessage = async (
-  content,
-  selectedEndpoint = endpoint
-) => {
-  if (
-    !content?.trim() ||
-    loading
-  ) {
-    return;
-  }
+    let conversationId = activeConversationId;
+    const userPrompt = content.trim();
 
-  const isNewConversation =
-    !activeConversationId;
+    /* Show user message immediately */
+    addMessage({
+      role: "user",
+      content: userPrompt,
+      createdAt: new Date().toISOString(),
+    });
 
-  let conversationId =
-    activeConversationId;
+    /* Show typing immediately */
+    setLoading(true);
 
-  const userPrompt =
-    content.trim();
+    try {
+      /* Create conversation in the background only when needed */
+      if (!conversationId) {
+        suppressNextConversationLoadRef.current = true;
 
-  /* Show user message immediately */
-  addMessage({
-    role: "user",
-    content: userPrompt,
-    createdAt:
-      new Date().toISOString(),
-  });
-
-  /* Show typing indicator immediately */
-  setLoading(true);
-
-  try {
-    /* Create conversation only if needed */
-    if (!conversationId) {
-      conversationId =
-        await createConversation(
+        conversationId = await createConversation(
           generateTitle(content)
         );
 
-      if (!conversationId) {
-        addMessage({
-          role: "assistant",
-          content:
-            "Unable to create conversation.",
-          createdAt:
-            new Date().toISOString(),
-        });
+        if (!conversationId) {
+          suppressNextConversationLoadRef.current = false;
 
-        return;
-      }
-    }
+          addMessage({
+            role: "assistant",
+            content: "Unable to create conversation.",
+            createdAt: new Date().toISOString(),
+          });
 
-    const result =
-      await sendPrompt(
-        selectedEndpoint,
-        {
-          userId: user?.id,
-          conversationId,
-          prompt: userPrompt,
+          return;
         }
-      );
-
-    addMessage({
-      role: "assistant",
-
-      content:
-        result.data?.response ||
-        result.message ||
-        "Something went wrong",
-
-      products:
-        result.data?.products ||
-        [],
-
-      createdAt:
-        new Date().toISOString(),
-    });
-
-    /*
-      IMPORTANT:
-      Refresh ONLY for the first message
-      of a newly created conversation.
-    */
-
-    if (
-      isNewConversation
-    ) {
-      try {
-        await new Promise(
-          (resolve) =>
-            setTimeout(
-              resolve,
-              300
-            )
-        );
-
-        const response =
-          await getMessages(
-            conversationId
-          );
-
-        if (
-          response.messages?.length
-        ) {
-          setMessages(
-            response.messages
-          );
-        }
-      } catch (err) {
-        console.error(
-          "Failed to refresh first conversation messages:",
-          err
-        );
       }
+
+      const result = await sendPrompt(selectedEndpoint, {
+        userId: user?.id,
+        conversationId,
+        prompt: userPrompt,
+      });
+
+      addMessage({
+        role: "assistant",
+        content:
+          result.data?.response ||
+          result.message ||
+          "Something went wrong",
+        products: result.data?.products || [],
+        createdAt: new Date().toISOString(),
+      });
+
+      await loadConversations();
+    } catch (error) {
+      console.error(error);
+
+      addMessage({
+        role: "assistant",
+        content:
+          error?.response?.data?.message ||
+          "Unable to connect to AskDrip",
+        createdAt: new Date().toISOString(),
+      });
+    } finally {
+      setLoading(false);
     }
-
-    await loadConversations();
-
-  } catch (error) {
-    console.error(error);
-
-    addMessage({
-      role: "assistant",
-
-      content:
-        error?.response
-          ?.data?.message ||
-        "Unable to connect to AskDrip",
-
-      createdAt:
-        new Date().toISOString(),
-    });
-
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   /* =========================
      CLEAR LOCAL MESSAGES
   ========================= */
-
-  const clearMessages =
-    () => {
-
-      setMessages([]);
-
-    };
+  const clearMessages = () => {
+    setMessages([]);
+  };
 
   return (
     <ChatContext.Provider
       value={{
         messages,
-
         addMessage,
-
         sendMessage,
-
         clearMessages,
-
         endpoint,
         setEndpoint,
-
         loading,
-
         activeConversation,
       }}
     >
       {children}
     </ChatContext.Provider>
   );
-
 };
 
-export const useChat =
-  () => {
+export const useChat = () => {
+  const context = useContext(ChatContext);
 
-    const context =
-      useContext(
-        ChatContext
-      );
+  if (!context) {
+    throw new Error("useChat must be used inside ChatProvider");
+  }
 
-    if (!context) {
-      throw new Error(
-        "useChat must be used inside ChatProvider"
-      );
-    }
-
-    return context;
-
-  };
+  return context;
+};
