@@ -1,8 +1,3 @@
-import {
-  Shirt,
-  Activity,
-} from "lucide-react";
-
 export default function Header() {
   return (
     <div
@@ -14,6 +9,7 @@ export default function Header() {
         bg-white/80
         px-6 py-4
         backdrop-blur-xl
+
         dark:border-zinc-800
         dark:bg-black/80
       "
@@ -21,15 +17,24 @@ export default function Header() {
       <div className="flex items-center gap-3">
         <div
           className="
+            flex
+            items-center
+            justify-center
             rounded-xl
             bg-zinc-100
             p-2
             dark:bg-zinc-900
           "
         >
-          <Shirt
-            size={20}
-            className="text-zinc-900 dark:text-white"
+          <img
+            src="/logo-light.png"
+            alt="AskDrip"
+            className="block h-8 w-8 dark:hidden"
+          />
+          <img
+            src="/logo-dark.png"
+            alt="AskDrip"
+            className="hidden h-8 w-8 dark:block"
           />
         </div>
 
@@ -42,28 +47,6 @@ export default function Header() {
             Fashion AI Assistant
           </p>
         </div>
-      </div>
-
-      <div
-        className="
-          flex items-center gap-2
-          rounded-full
-          border
-          border-zinc-200
-          bg-zinc-100
-          px-3 py-1
-          dark:border-zinc-800
-          dark:bg-zinc-900
-        "
-      >
-        <Activity
-          size={12}
-          className="text-green-500"
-        />
-
-        <span className="text-xs text-zinc-600 dark:text-zinc-400">
-          Online
-        </span>
       </div>
     </div>
   );
