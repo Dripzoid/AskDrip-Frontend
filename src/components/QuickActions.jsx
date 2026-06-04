@@ -3,6 +3,7 @@ import {
   Palette,
   Sparkles,
   ChevronRight,
+  X,
 } from "lucide-react";
 
 const actions = [
@@ -28,15 +29,16 @@ const actions = [
 
 export default function QuickActions({
   onSelect,
+  onClose,
 }) {
   return (
     <div
       className="
         absolute
-        bottom-16
+        bottom-14
         left-0
         z-50
-        w-80
+        w-72
         overflow-hidden
         rounded-2xl
         border
@@ -50,18 +52,40 @@ export default function QuickActions({
       "
     >
       {/* Header */}
-      <div className="border-b border-zinc-200 p-3 dark:border-zinc-800">
-        <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">
-          AskDrip Actions
-        </h3>
+      <div className="flex items-start justify-between border-b border-zinc-200 p-2.5 dark:border-zinc-800">
+        <div>
+          <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">
+            AskDrip Actions
+          </h3>
 
-        <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-          Choose a specialized mode
-        </p>
+          <p className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+            Choose a specialized mode
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="
+            rounded-md
+            p-1
+            text-zinc-500
+            transition
+            hover:bg-zinc-100
+            hover:text-zinc-900
+
+            dark:text-zinc-400
+            dark:hover:bg-zinc-800
+            dark:hover:text-white
+          "
+          aria-label="Close quick actions"
+        >
+          <X size={14} />
+        </button>
       </div>
 
       {/* Actions */}
-      <div className="p-2">
+      <div className="p-1.5">
         {actions.map((action) => {
           const Icon = action.icon;
 
@@ -74,9 +98,9 @@ export default function QuickActions({
                 flex
                 w-full
                 items-center
-                gap-3
+                gap-2.5
                 rounded-xl
-                p-3
+                p-2.5
                 text-left
                 transition-all
                 duration-200
@@ -89,8 +113,8 @@ export default function QuickActions({
               <div
                 className="
                   flex
-                  h-11
-                  w-11
+                  h-9
+                  w-9
                   items-center
                   justify-center
                   rounded-xl
@@ -103,7 +127,7 @@ export default function QuickActions({
                   dark:text-white
                 "
               >
-                <Icon size={18} />
+                <Icon size={16} />
               </div>
 
               {/* Content */}
@@ -112,14 +136,14 @@ export default function QuickActions({
                   {action.title}
                 </h4>
 
-                <p className="text-xs text-zinc-600 dark:text-zinc-400">
+                <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
                   {action.description}
                 </p>
               </div>
 
               {/* Arrow */}
               <ChevronRight
-                size={16}
+                size={14}
                 className="
                   text-zinc-500
                   transition
@@ -134,7 +158,7 @@ export default function QuickActions({
 
       {/* Footer */}
       <div className="border-t border-zinc-200 px-3 py-2 dark:border-zinc-800">
-        <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+        <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
           Select your mode for accurate AskDrip results.
         </p>
       </div>
