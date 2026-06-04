@@ -37,7 +37,9 @@ export default function Sidebar() {
 
   const [menuOpen, setMenuOpen] =
     useState(null);
-
+  const isMobileExpanded =
+  mobileSidebarOpen &&
+  window.innerWidth < 768;
   const [
     mobileSidebarOpen,
     setMobileSidebarOpen,
@@ -214,35 +216,36 @@ export default function Sidebar() {
                 false
               );
             }}
-            className={`
-              mt-4
-              flex
-              items-center
-              justify-center
-              gap-2
+            cclassName={`
+  mt-4
+  flex
+  items-center
+  justify-center
+  gap-2
+  rounded-xl
+  bg-zinc-900
+  py-3
+  text-white
 
-              rounded-xl
+  dark:bg-white
+  dark:text-zinc-900
 
-              bg-zinc-900
-              py-3
-              text-white
-
-              dark:bg-white
-              dark:text-zinc-900
-
-              ${
-                sidebarCollapsed
-                  ? "mx-auto w-12"
-                  : "w-full px-4"
-              }
-            `}
+  ${
+    (!sidebarCollapsed ||
+      mobileSidebarOpen)
+      ? "w-full px-4"
+      : "mx-auto w-12"
+  }
+`}
           >
-            <Plus size={16} />
-            {!sidebarCollapsed &&
-              "New Chat"}
+           <Plus size={16} />
+{(!sidebarCollapsed ||
+  mobileSidebarOpen) &&
+  "New Chat"}
           </button>
 
-          {!sidebarCollapsed && (
+         {(!sidebarCollapsed ||
+  mobileSidebarOpen) && (
             <div className="relative mt-3">
               <Search
                 size={15}
@@ -343,7 +346,8 @@ export default function Sidebar() {
                       {chat.title}
                     </span>
 
-                    {!sidebarCollapsed && (
+                    {(!sidebarCollapsed ||
+  mobileSidebarOpen) && (
                       <button
                         type="button"
                         onClick={(
