@@ -7,7 +7,6 @@ import {
   Copy,
   Check,
   User,
-  Shirt,
   ThumbsUp,
   ThumbsDown,
   RotateCcw,
@@ -21,14 +20,11 @@ export default function MessageBubble({
 }) {
   const isUser = role === "user";
 
-  const [copied, setCopied] =
-    useState(false);
+  const [copied, setCopied] = useState(false);
 
   const copyMessage = async () => {
     try {
-      await navigator.clipboard.writeText(
-        content
-      );
+      await navigator.clipboard.writeText(content);
 
       setCopied(true);
 
@@ -36,24 +32,19 @@ export default function MessageBubble({
         setCopied(false);
       }, 2000);
     } catch (error) {
-      console.error(
-        "Failed to copy message:",
-        error
-      );
+      console.error("Failed to copy message:", error);
     }
   };
 
   return (
     <div
       className={`group mb-8 flex gap-4 ${
-        isUser
-          ? "flex-row-reverse"
-          : ""
+        isUser ? "flex-row-reverse" : ""
       }`}
     >
       {/* Avatar */}
       <div
-        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
+        className={`flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full ${
           isUser
             ? `
               bg-zinc-900
@@ -67,19 +58,28 @@ export default function MessageBubble({
               border
               border-zinc-300
               bg-white
-              text-zinc-900
               shadow-md
 
               dark:border-zinc-700
               dark:bg-zinc-900
-              dark:text-white
             `
         }`}
       >
         {isUser ? (
           <User size={18} />
         ) : (
-          <Shirt size={18} />
+          <>
+            <img
+              src="/logo-light.png"
+              alt="AskDrip"
+              className="block h-full w-full object-contain p-1.5 dark:hidden"
+            />
+            <img
+              src="/logo-dark.png"
+              alt="AskDrip"
+              className="hidden h-full w-full object-contain p-1.5 dark:block"
+            />
+          </>
         )}
       </div>
 
@@ -94,15 +94,11 @@ export default function MessageBubble({
         {/* Header */}
         <div className="mb-2 flex items-center gap-2">
           <span className="text-sm font-medium text-zinc-900 dark:text-white">
-            {isUser
-              ? "You"
-              : "AskDrip"}
+            {isUser ? "You" : "AskDrip"}
           </span>
 
           <span className="text-xs text-zinc-500 dark:text-zinc-400">
-            {new Date(
-              timestamp
-            ).toLocaleTimeString([], {
+            {new Date(timestamp).toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
             })}
@@ -173,30 +169,24 @@ export default function MessageBubble({
               dark:prose-invert
             "
           >
-            <ReactMarkdown>
-              {content}
-            </ReactMarkdown>
+            <ReactMarkdown>{content}</ReactMarkdown>
           </div>
 
           {/* Product Carousel */}
-          {!isUser &&
-            products?.length >
-              0 && (
-              <div
-                className="
-                  mt-5
-                  border-t
-                  border-zinc-200
-                  pt-5
+          {!isUser && products?.length > 0 && (
+            <div
+              className="
+                mt-5
+                border-t
+                border-zinc-200
+                pt-5
 
-                  dark:border-zinc-800
-                "
-              >
-                <ProductCarousel
-                  products={products}
-                />
-              </div>
-            )}
+                dark:border-zinc-800
+              "
+            >
+              <ProductCarousel products={products} />
+            </div>
+          )}
         </div>
 
         {/* Hover Actions */}
@@ -233,11 +223,7 @@ export default function MessageBubble({
               dark:hover:text-white
             "
           >
-            {copied ? (
-              <Check size={16} />
-            ) : (
-              <Copy size={16} />
-            )}
+            {copied ? <Check size={16} /> : <Copy size={16} />}
           </button>
 
           {/* Assistant Actions */}
@@ -258,9 +244,7 @@ export default function MessageBubble({
                   dark:hover:text-white
                 "
               >
-                <ThumbsUp
-                  size={16}
-                />
+                <ThumbsUp size={16} />
               </button>
 
               <button
@@ -278,9 +262,7 @@ export default function MessageBubble({
                   dark:hover:text-white
                 "
               >
-                <ThumbsDown
-                  size={16}
-                />
+                <ThumbsDown size={16} />
               </button>
 
               <button
@@ -298,9 +280,7 @@ export default function MessageBubble({
                   dark:hover:text-white
                 "
               >
-                <RotateCcw
-                  size={16}
-                />
+                <RotateCcw size={16} />
               </button>
             </>
           )}
