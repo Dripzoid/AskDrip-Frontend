@@ -14,11 +14,7 @@ import {
 } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
-import {
-  useState,
-  useMemo,
-} from "react";
-
+import { useState, useMemo } from "react";
 import { useConversations } from "../context/ConversationContext";
 
 export default function Sidebar() {
@@ -32,37 +28,31 @@ export default function Sidebar() {
     setSidebarCollapsed,
   } = useConversations();
 
-  const [search, setSearch] =
-    useState("");
+  const [search, setSearch] = useState("");
+  const [menuOpen, setMenuOpen] = useState(null);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
-  const [menuOpen, setMenuOpen] =
-    useState(null);
-  const isMobileExpanded =
-  mobileSidebarOpen &&
-  window.innerWidth < 768;
-  const [
-    mobileSidebarOpen,
-    setMobileSidebarOpen,
-  ] = useState(false);
+  const { logout } = useAuth();
 
-  const { user, logout } =
-    useAuth();
+  const showExpandedSidebar = !sidebarCollapsed || mobileSidebarOpen;
+
+  const isMobileViewport =
+    typeof window !== "undefined" && window.innerWidth < 768;
 
   const filteredChats = useMemo(() => {
     return [...conversations]
-      .sort(
-        (a, b) =>
-          new Date(b.createdAt) -
-          new Date(a.createdAt)
-      )
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .filter((chat) =>
         (chat.title || "")
           .toLowerCase()
-          .includes(
-            search.toLowerCase()
-          )
+          .includes(search.toLowerCase())
       );
   }, [conversations, search]);
+
+  const handleCloseMobileSidebar = () => {
+    setMobileSidebarOpen(false);
+    setMenuOpen(null);
+  };
 
   return (
     <>
@@ -76,18 +66,14 @@ export default function Sidebar() {
             bg-black/50
             md:hidden
           "
-          onClick={() =>
-            setMobileSidebarOpen(false)
-          }
+          onClick={handleCloseMobileSidebar}
         />
       )}
 
       {/* Mobile Open Button */}
       <button
         type="button"
-        onClick={() =>
-          setMobileSidebarOpen(true)
-        }
+        onClick={() => setMobileSidebarOpen(true)}
         className="
           fixed
           left-4
@@ -155,9 +141,7 @@ export default function Sidebar() {
         {/* Mobile Close Button */}
         <button
           type="button"
-          onClick={() =>
-            setMobileSidebarOpen(false)
-          }
+          onClick={handleCloseMobileSidebar}
           className="
             absolute
             right-3
@@ -173,11 +157,7 @@ export default function Sidebar() {
         {/* Desktop Collapse Toggle */}
         <button
           type="button"
-          onClick={() =>
-            setSidebarCollapsed(
-              !sidebarCollapsed
-            )
-          }
+          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
           className={`
             hidden
             md:flex
@@ -212,40 +192,34 @@ export default function Sidebar() {
             type="button"
             onClick={() => {
               startNewChat();
-              setMobileSidebarOpen(
-                false
-              );
+              handleCloseMobileSidebar();
             }}
-            cclassName={`
-  mt-4
-  flex
-  items-center
-  justify-center
-  gap-2
-  rounded-xl
-  bg-zinc-900
-  py-3
-  text-white
+            className={`
+              mt-4
+              flex
+              items-center
+              justify-center
+              gap-2
+              rounded-xl
+              bg-zinc-900
+              py-3
+              text-white
 
-  dark:bg-white
-  dark:text-zinc-900
+              dark:bg-white
+              dark:text-zinc-900
 
-  ${
-    (!sidebarCollapsed ||
-      mobileSidebarOpen)
-      ? "w-full px-4"
-      : "mx-auto w-12"
-  }
-`}
+              ${
+                showExpandedSidebar
+                  ? "w-full px-4"
+                  : "mx-auto w-12"
+              }
+            `}
           >
-           <Plus size={16} />
-{(!sidebarCollapsed ||
-  mobileSidebarOpen) &&
-  "New Chat"}
+            <Plus size={16} />
+            {showExpandedSidebar && "New Chat"}
           </button>
 
-         {(!sidebarCollapsed ||
-  mobileSidebarOpen) && (
+          {showExpandedSidebar && (
             <div className="relative mt-3">
               <Search
                 size={15}
@@ -259,11 +233,7 @@ export default function Sidebar() {
 
               <input
                 value={search}
-                onChange={(e) =>
-                  setSearch(
-                    e.target.value
-                  )
-                }
+                onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search chats..."
                 className="
                   w-full
@@ -287,154 +257,127 @@ export default function Sidebar() {
         {/* Chats */}
         <div className="flex-1 overflow-y-auto p-3">
           <div className="space-y-1">
-            {filteredChats.map(
-              (chat) => (
-                <div
-                  key={chat.id}
-                  className="relative"
+            {filteredChats.map((chat) => (
+              <div key={chat.id} className="relative">
+                <button
+                  type="button"
+                  title={chat.title}
+                  onClick={() => {
+                    selectConversation(chat.id);
+                    setMenuOpen(null);
+
+                    if (isMobileViewport) {
+                      setMobileSidebarOpen(false);
+                    }
+                  }}
+                  className={`
+                    group
+                    flex
+                    w-full
+                    items-center
+                    rounded-xl
+                    py-3
+                    text-left
+
+                    ${
+                      showExpandedSidebar
+                        ? "gap-3 px-3 pr-10"
+                        : "justify-center gap-2 px-2"
+                    }
+
+                    ${
+                      activeConversationId === chat.id
+                        ? "bg-zinc-100 dark:bg-zinc-800"
+                        : "hover:bg-zinc-100 dark:hover:bg-zinc-900"
+                    }
+                  `}
                 >
+                  <MessageSquare size={16} />
+
+                  <span
+                    className={
+                      showExpandedSidebar
+                        ? "flex-1 truncate text-sm"
+                        : "truncate text-xs"
+                    }
+                  >
+                    {chat.title}
+                  </span>
+                </button>
+
+                {showExpandedSidebar && (
                   <button
                     type="button"
-                    title={chat.title}
-                    onClick={() => {
-                      selectConversation(
-                        chat.id
-                      );
-
-                      if (
-                        window.innerWidth <
-                        768
-                      ) {
-                        setMobileSidebarOpen(
-                          false
-                        );
-                      }
+                    aria-label="Open chat menu"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setMenuOpen(menuOpen === chat.id ? null : chat.id);
                     }}
-                    className={`
-                      group
-                      flex
-                      w-full
-                      items-center
-                      rounded-xl
-                      py-3
-
-                      ${
-                        sidebarCollapsed
-                          ? "gap-2 px-2"
-                          : "gap-3 px-3"
-                      }
-
-                      ${
-                        activeConversationId ===
-                        chat.id
-                          ? "bg-zinc-100 dark:bg-zinc-800"
-                          : "hover:bg-zinc-100 dark:hover:bg-zinc-900"
-                      }
-                    `}
+                    className="
+                      absolute
+                      right-2
+                      top-1/2
+                      -translate-y-1/2
+                      rounded-md
+                      p-1
+                      hover:bg-zinc-200
+                      dark:hover:bg-zinc-800
+                    "
                   >
-                    <MessageSquare
-                      size={16}
+                    <MoreHorizontal size={16} />
+                  </button>
+                )}
+
+                {menuOpen === chat.id && showExpandedSidebar && (
+                  <div
+                    className="
+                      absolute
+                      right-2
+                      top-14
+                      z-50
+                      w-44
+                      rounded-xl
+                      border
+                      border-zinc-200
+                      bg-white
+                      p-1
+                      shadow-xl
+
+                      dark:border-zinc-800
+                      dark:bg-zinc-900
+                    "
+                  >
+                    <MenuItem
+                      disabled
+                      icon={<Pencil size={14} />}
+                      label="Rename (Soon)"
                     />
 
-                    <span
-                      className={
-                        sidebarCollapsed
-                          ? "truncate text-xs"
-                          : "flex-1 truncate text-sm"
-                      }
-                    >
-                      {chat.title}
-                    </span>
+                    <MenuItem
+                      disabled
+                      icon={<Pin size={14} />}
+                      label="Pin (Soon)"
+                    />
 
-                    {(!sidebarCollapsed ||
-  mobileSidebarOpen) && (
-                      <button
-                        type="button"
-                        onClick={(
-                          e
-                        ) => {
-                          e.stopPropagation();
+                    <MenuItem
+                      disabled
+                      icon={<Copy size={14} />}
+                      label="Duplicate (Soon)"
+                    />
 
-                          setMenuOpen(
-                            menuOpen ===
-                              chat.id
-                              ? null
-                              : chat.id
-                          );
-                        }}
-                      >
-                        <MoreHorizontal
-                          size={16}
-                        />
-                      </button>
-                    )}
-                  </button>
-
-                  {menuOpen ===
-                    chat.id &&
-                    !sidebarCollapsed && (
-                      <div
-                        className="
-                          absolute
-                          right-2
-                          top-14
-                          z-50
-                          w-44
-                          rounded-xl
-                          border
-                          border-zinc-200
-                          bg-white
-                          p-1
-                          shadow-xl
-
-                          dark:border-zinc-800
-                          dark:bg-zinc-900
-                        "
-                      >
-                        <MenuItem
-                          disabled
-                          icon={
-                            <Pencil size={14} />
-                          }
-                          label="Rename (Soon)"
-                        />
-
-                        <MenuItem
-                          disabled
-                          icon={
-                            <Pin size={14} />
-                          }
-                          label="Pin (Soon)"
-                        />
-
-                        <MenuItem
-                          disabled
-                          icon={
-                            <Copy size={14} />
-                          }
-                          label="Duplicate (Soon)"
-                        />
-
-                        <MenuItem
-                          danger
-                          icon={
-                            <Trash2 size={14} />
-                          }
-                          label="Delete"
-                          onClick={() => {
-                            deleteConversation(
-                              chat.id
-                            );
-                            setMenuOpen(
-                              null
-                            );
-                          }}
-                        />
-                      </div>
-                    )}
-                </div>
-              )
-            )}
+                    <MenuItem
+                      danger
+                      icon={<Trash2 size={14} />}
+                      label="Delete"
+                      onClick={() => {
+                        deleteConversation(chat.id);
+                        setMenuOpen(null);
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
 
@@ -442,7 +385,10 @@ export default function Sidebar() {
         <div className="border-t border-zinc-200 p-4 dark:border-zinc-800">
           <button
             type="button"
-            onClick={logout}
+            onClick={() => {
+              logout();
+              handleCloseMobileSidebar();
+            }}
             className="
               flex
               w-full
@@ -457,8 +403,7 @@ export default function Sidebar() {
             "
           >
             <LogOut size={16} />
-            {!sidebarCollapsed &&
-              "Logout"}
+            {showExpandedSidebar && "Logout"}
           </button>
         </div>
       </aside>
