@@ -72,27 +72,53 @@ export default function Sidebar() {
 
       {/* Mobile Open Button */}
       <button
-        type="button"
-        onClick={() => setMobileSidebarOpen(true)}
-        className="
-          fixed
-          left-4
-          top-20
-          z-40
-          rounded-xl
-          border
-          border-zinc-200
-          bg-white
-          p-2
-          shadow-md
-          md:hidden
+  type="button"
+  onClick={() => setMobileSidebarOpen(true)}
+  className="
+    fixed
+    left-4
+    top-20
+    z-40
 
-          dark:border-zinc-800
-          dark:bg-zinc-900
-        "
-      >
-        <Menu size={22} />
-      </button>
+    flex
+    items-center
+    justify-center
+
+    h-11
+    w-11
+
+    rounded-xl
+
+    border
+    border-zinc-200/80
+
+    bg-white/90
+    text-zinc-900
+
+    shadow-lg
+    backdrop-blur-md
+
+    transition-all
+    duration-200
+
+    hover:scale-105
+    hover:bg-white
+    hover:shadow-xl
+
+    active:scale-95
+
+    md:hidden
+
+    dark:border-zinc-700
+    dark:bg-zinc-900/90
+    dark:text-white
+
+    dark:hover:bg-zinc-800
+    dark:hover:shadow-black/30
+  "
+>
+  <Menu size={20} />
+</button>
 
       <aside
         className={`
