@@ -78,12 +78,15 @@ export default function ChatInput() {
   "
 >
         {showMenu && (
-          <QuickActions
-            onSelect={(value) => {
-              setEndpoint(value);
-              setShowMenu(false);
-            }}
-          />
+          {showMenu && (
+  <QuickActions
+    onSelect={(value) => {
+      setEndpoint(value);
+      setShowMenu(false);
+    }}
+    onClose={() => setShowMenu(false)}
+  />
+)}
         )}
 
         <div
