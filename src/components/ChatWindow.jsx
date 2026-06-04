@@ -133,32 +133,38 @@ export default function ChatWindow() {
             "
           >
             {/* Logo */}
-            <div
-              className="
-                mb-5
-                flex
-                items-center
-                justify-center
-                rounded-3xl
-                border
-                border-zinc-200
-                bg-zinc-100
-                p-5
-                dark:border-zinc-800
-                dark:bg-zinc-900
-              "
-            >
-              <img
-                src="/logo-light.png"
-                alt="AskDrip"
-                className="block h-14 w-14 dark:hidden"
-              />
-              <img
-                src="/logo-dark.png"
-                alt="AskDrip"
-                className="hidden h-14 w-14 dark:block"
-              />
-            </div>
+           <div
+  className="
+    mb-5
+    flex
+    items-center
+    justify-center
+  "
+>
+  <img
+    src="/logo-light.png"
+    alt="AskDrip"
+    className="
+      block
+      h-28
+      w-auto
+      select-none
+      dark:hidden
+    "
+  />
+
+  <img
+    src="/logo-dark.png"
+    alt="AskDrip"
+    className="
+      hidden
+      h-28
+      w-auto
+      select-none
+      dark:block
+    "
+  />
+</div>
 
             {/* Title */}
             <h1
