@@ -1,4 +1,8 @@
-import { useState } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+} from "react";
 
 import {
   Plus,
@@ -17,9 +21,14 @@ import { useConversations } from "../context/ConversationContext";
 
 export default function ChatInput() {
   const [prompt, setPrompt] = useState("");
-  const [showMenu, setShowMenu] = useState(false);
+  const [showMenu, setShowMenu] =
+    useState(false);
 
-  const { sidebarCollapsed } = useConversations();
+  const quickActionsRef =
+    useRef(null);
+
+  const { sidebarCollapsed } =
+    useConversations();
 
   const {
     sendMessage,
@@ -49,17 +58,51 @@ export default function ChatInput() {
     }
 
     const message = prompt.trim();
+
     setPrompt("");
 
-    await sendMessage(message, endpoint);
+    await sendMessage(
+      message,
+      endpoint
+    );
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (
+      e.key === "Enter" &&
+      !e.shiftKey
+    ) {
       e.preventDefault();
       handleSend();
     }
   };
+
+  useEffect(() => {
+    const handleClickOutside = (
+      event
+    ) => {
+      if (
+        quickActionsRef.current &&
+        !quickActionsRef.current.contains(
+          event.target
+        )
+      ) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener(
+      "mousedown",
+      handleClickOutside
+    );
+
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
+    };
+  }, []);
 
   return (
     <div
@@ -71,22 +114,26 @@ export default function ChatInput() {
       "
     >
       <div
-  className="
-    relative
-    mx-auto
-    max-w-4xl
-  "
->
+        className="
+          relative
+          mx-auto
+          max-w-4xl
+        "
+      >
         {showMenu && (
-          {showMenu && (
-  <QuickActions
-    onSelect={(value) => {
-      setEndpoint(value);
-      setShowMenu(false);
-    }}
-    onClose={() => setShowMenu(false)}
-  />
-)}
+          <div ref={quickActionsRef}>
+            <QuickActions
+              onSelect={(
+                value
+              ) => {
+                setEndpoint(value);
+                setShowMenu(false);
+              }}
+              onClose={() =>
+                setShowMenu(false)
+              }
+            />
+          </div>
         )}
 
         <div
@@ -104,8 +151,8 @@ export default function ChatInput() {
             dark:focus-within:border-zinc-600
           "
         >
-          {/* Endpoint Badge */}
-          {(endpoint !== "chat" || prompt.length > 0) && (
+          {(endpoint !== "chat" ||
+            prompt.length > 0) && (
             <div
               className="
                 flex
@@ -116,7 +163,8 @@ export default function ChatInput() {
                 pt-3
               "
             >
-              {endpoint !== "chat" && (
+              {endpoint !==
+                "chat" && (
                 <div
                   className="
                     flex
@@ -137,19 +185,39 @@ export default function ChatInput() {
                   "
                 >
                   {(() => {
-                    const Icon = endpointConfig[endpoint]?.icon;
-                    return Icon ? <Icon size={14} /> : null;
+                    const Icon =
+                      endpointConfig[
+                        endpoint
+                      ]?.icon;
+
+                    return Icon ? (
+                      <Icon
+                        size={14}
+                      />
+                    ) : null;
                   })()}
 
-                  <span>{endpointConfig[endpoint]?.label}</span>
+                  <span>
+                    {
+                      endpointConfig[
+                        endpoint
+                      ]?.label
+                    }
+                  </span>
 
                   <button
-                    onClick={() => setEndpoint("chat")}
+                    type="button"
+                    onClick={() =>
+                      setEndpoint(
+                        "chat"
+                      )
+                    }
                     className="
                       rounded-full
                       p-0.5
                       text-zinc-500
                       transition
+
                       hover:bg-zinc-200
                       hover:text-zinc-900
 
@@ -165,7 +233,6 @@ export default function ChatInput() {
             </div>
           )}
 
-          {/* Input Row */}
           <div
             className="
               flex
@@ -176,12 +243,18 @@ export default function ChatInput() {
             "
           >
             <button
-              onClick={() => setShowMenu(!showMenu)}
+              type="button"
+              onClick={() =>
+                setShowMenu(
+                  !showMenu
+                )
+              }
               className="
                 rounded-full
                 p-2
                 text-zinc-500
                 transition
+
                 hover:bg-zinc-100
                 hover:text-zinc-900
 
@@ -197,12 +270,19 @@ export default function ChatInput() {
               rows={1}
               value={prompt}
               onChange={(e) => {
-                setPrompt(e.target.value);
+                setPrompt(
+                  e.target.value
+                );
 
-                e.target.style.height = "auto";
-                e.target.style.height = `${e.target.scrollHeight}px`;
+                e.target.style.height =
+                  "auto";
+
+                e.target.style.height =
+                  `${e.target.scrollHeight}px`;
               }}
-              onKeyDown={handleKeyDown}
+              onKeyDown={
+                handleKeyDown
+              }
               disabled={loading}
               placeholder="Ask anything..."
               className="
@@ -213,10 +293,14 @@ export default function ChatInput() {
                 flex-1
                 resize-none
                 overflow-y-auto
+
                 bg-transparent
+
                 leading-[40px]
+
                 text-zinc-900
                 outline-none
+
                 placeholder:text-zinc-500
 
                 dark:text-white
@@ -227,8 +311,12 @@ export default function ChatInput() {
             />
 
             <button
+              type="button"
               onClick={handleSend}
-              disabled={loading || !prompt.trim()}
+              disabled={
+                loading ||
+                !prompt.trim()
+              }
               className="
                 flex
                 h-10
@@ -236,11 +324,15 @@ export default function ChatInput() {
                 items-center
                 justify-center
                 rounded-full
+
                 bg-zinc-900
                 text-white
+
                 transition-all
+
                 hover:scale-105
                 hover:bg-zinc-800
+
                 disabled:cursor-not-allowed
                 disabled:opacity-50
 
@@ -255,7 +347,9 @@ export default function ChatInput() {
                   className="animate-spin"
                 />
               ) : (
-                <SendHorizontal size={18} />
+                <SendHorizontal
+                  size={18}
+                />
               )}
             </button>
           </div>
@@ -267,10 +361,13 @@ export default function ChatInput() {
             text-center
             text-xs
             text-zinc-500
+
             dark:text-zinc-400
           "
         >
-          AskDrip can make mistakes. Verify important fashion advice.
+          AskDrip can make mistakes.
+          Verify important fashion
+          advice.
         </p>
       </div>
     </div>
