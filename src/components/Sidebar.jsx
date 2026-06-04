@@ -131,7 +131,7 @@ export default function Sidebar() {
 
           ${
             sidebarCollapsed
-              ? "md:w-20"
+              ? "md:w-28"
               : "md:w-72"
           }
 
@@ -187,7 +187,7 @@ export default function Sidebar() {
         </button>
 
         {/* Header */}
-        <div className="border-b border-zinc-200 p-4 dark:border-zinc-800">
+        <div className="border-b border-zinc-200 p-4 pt-14 md:pt-4 dark:border-zinc-800">
           <button
             type="button"
             onClick={() => {
@@ -195,7 +195,6 @@ export default function Sidebar() {
               handleCloseMobileSidebar();
             }}
             className={`
-              mt-4
               flex
               items-center
               justify-center
@@ -210,8 +209,8 @@ export default function Sidebar() {
 
               ${
                 showExpandedSidebar
-                  ? "w-full px-4"
-                  : "mx-auto w-12"
+                  ? "mt-0 w-full px-4"
+                  : "mt-0 mx-auto w-12"
               }
             `}
           >
@@ -282,7 +281,7 @@ export default function Sidebar() {
                     ${
                       showExpandedSidebar
                         ? "gap-3 px-3 pr-10"
-                        : "justify-center gap-2 px-2"
+                        : "justify-start gap-2 px-2 pr-3"
                     }
 
                     ${
@@ -297,8 +296,8 @@ export default function Sidebar() {
                   <span
                     className={
                       showExpandedSidebar
-                        ? "flex-1 truncate text-sm"
-                        : "truncate text-xs"
+                        ? "min-w-0 flex-1 truncate text-sm"
+                        : "min-w-0 flex-1 truncate text-[11px] leading-tight"
                     }
                   >
                     {chat.title}
