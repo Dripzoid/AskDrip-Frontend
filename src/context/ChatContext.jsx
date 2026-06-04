@@ -20,7 +20,11 @@ const generateTitle = (text) => {
   return cleaned
     .split(" ")
     .slice(0, 4)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map(
+      (word) =>
+        word.charAt(0).toUpperCase() +
+        word.slice(1)
+    )
     .join(" ");
 };
 
@@ -31,7 +35,7 @@ export const ChatProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
   const [endpoint, setEndpoint] = useState("chat");
 
-  const suppressNextConversationLoadRef = useRef(false);
+  const skipNextMessagesLoadRef = useRef(false);
 
   const {
     conversations,
@@ -61,8 +65,8 @@ export const ChatProvider = ({ children }) => {
         return;
       }
 
-      if (suppressNextConversationLoadRef.current) {
-        suppressNextConversationLoadRef.current = false;
+      if (skipNextMessagesLoadRef.current) {
+        skipNextMessagesLoadRef.current = false;
         finishConversationLoading();
         return;
       }
@@ -70,23 +74,26 @@ export const ChatProvider = ({ children }) => {
       try {
         setConversationLoading(true);
 
-        const response = await getMessages(activeConversationId);
-        const incoming = response.messages || [];
+        const response = await getMessages(
+          activeConversationId
+        );
 
+        const incoming = response.messages || [];
         setMessages(incoming);
       } catch (err) {
-        console.error("Failed to load messages:", err);
+        console.error(
+          "Failed to load messages:",
+          err
+        );
       } finally {
         finishConversationLoading();
       }
     };
 
     loadMessages();
-  }, [
-    activeConversationId,
-    setConversationLoading,
-    finishConversationLoading,
-  ]);
+    // Intentionally depend only on activeConversationId.
+    // Including context functions here can cause repeated reloads.
+  }, [activeConversationId]);
 
   /* =========================
      ADD MESSAGE
@@ -120,16 +127,16 @@ export const ChatProvider = ({ children }) => {
     setLoading(true);
 
     try {
-      /* Create conversation in the background only when needed */
+      /* Create conversation only when needed */
       if (!conversationId) {
-        suppressNextConversationLoadRef.current = true;
+        skipNextMessagesLoadRef.current = true;
 
         conversationId = await createConversation(
           generateTitle(content)
         );
 
         if (!conversationId) {
-          suppressNextConversationLoadRef.current = false;
+          skipNextMessagesLoadRef.current = false;
 
           addMessage({
             role: "assistant",
@@ -141,11 +148,14 @@ export const ChatProvider = ({ children }) => {
         }
       }
 
-      const result = await sendPrompt(selectedEndpoint, {
-        userId: user?.id,
-        conversationId,
-        prompt: userPrompt,
-      });
+      const result = await sendPrompt(
+        selectedEndpoint,
+        {
+          userId: user?.id,
+          conversationId,
+          prompt: userPrompt,
+        }
+      );
 
       addMessage({
         role: "assistant",
