@@ -5,180 +5,248 @@
 </p>
 
 <p align="center">
-  <strong>AI-powered fashion intelligence built for personalized styling, outfit discovery, color matching, and product recommendations.</strong>
+  <strong>AI-powered fashion intelligence for personalized styling, outfit discovery, color matching, and product recommendations.</strong>
 </p>
 
 <p align="center">
-  React · Vite · Tailwind CSS · Axios · Dripzoid API · AskDrip AI
+  <em>Part of the Dripzoid technology ecosystem.</em>
+</p>
+
+<p align="center">
+  React · Vite · Tailwind CSS · Axios · AI Services · Dripzoid API
 </p>
 
 ---
 
-## Overview
+## ✨ Overview
 
-**AskDrip** is an AI-powered fashion assistant developed as part of the Dripzoid ecosystem.
+**AskDrip** is an AI-powered fashion assistant built as part of the **Dripzoid ecosystem**.
 
-The platform combines conversational AI with fashion-specific capabilities to help users:
+Instead of forcing users to navigate through traditional product filters, AskDrip allows them to communicate their fashion intent naturally.
 
-- Discover complete outfits
-- Match colors
-- Get personalized styling advice
-- Discover relevant fashion products
-- Maintain persistent conversations
-- Continue previous fashion discussions
-- Interact with specialized AI modes
-
-AskDrip is designed around the idea that fashion assistance should be conversational rather than limited to traditional product filtering.
-
-Instead of navigating through multiple filters, a user can simply describe what they want:
+For example:
 
 > "Suggest an outfit for college."
 
-or:
-
 > "What colors go well with black cargo pants?"
-
-or:
 
 > "Suggest a streetwear outfit under ₹3000."
 
-AskDrip converts these natural-language requests into specialized AI workflows.
+AskDrip transforms these natural-language requests into specialized fashion-AI workflows and can return both **conversational guidance and relevant Dripzoid products**. 
+
+### Core capabilities
+
+* 💬 Conversational fashion assistance
+* 👕 Outfit generation
+* 🎨 Color matching
+* 🛍️ Product recommendations
+* 🧠 Specialized AI workflows
+* 💾 Persistent conversations
+* 🔐 Authenticated user sessions
+* 🌓 Light and dark themes
+* 📱 Responsive interface
+* 🔗 AI-to-commerce product discovery
 
 ---
 
-# Product Architecture
+# 🎯 Product Vision
 
-AskDrip follows a **frontend + AI backend + commerce backend** architecture.
-
-```text
-                         ┌──────────────────────┐
-                         │       User           │
-                         │  Web / Mobile Web    │
-                         └──────────┬───────────┘
-                                    │
-                                    ▼
-                         ┌──────────────────────┐
-                         │   AskDrip Frontend   │
-                         │                      │
-                         │ React 19             │
-                         │ Vite 8               │
-                         │ Tailwind CSS v4       │
-                         │ Axios                │
-                         └──────────┬───────────┘
-                                    │
-                 ┌──────────────────┴──────────────────┐
-                 │                                     │
-                 ▼                                     ▼
-      ┌──────────────────────┐              ┌──────────────────────┐
-      │   Dripzoid API       │              │  AskDrip Backend     │
-      │                      │              │                      │
-      │ Authentication       │              │ AI Chat              │
-      │ User Sessions        │              │ Outfit Generation    │
-      │ Conversations        │              │ Color Matching       │
-      │ Messages             │              │ Recommendations      │
-      │ User Data            │              │ AI Processing        │
-      └──────────┬───────────┘              └──────────┬───────────┘
-                 │                                     │
-                 │                                     ▼
-                 │                          ┌──────────────────────┐
-                 │                          │ AI / Fashion Data    │
-                 │                          │                      │
-                 │                          │ Product Knowledge    │
-                 │                          │ Fashion Intelligence │
-                 │                          │ Recommendation Logic │
-                 │                          └──────────────────────┘
-                 │
-                 ▼
-      ┌──────────────────────┐
-      │ Dripzoid Commerce     │
-      │ Platform              │
-      │                      │
-      │ Products             │
-      │ Product Images       │
-      │ Pricing              │
-      │ Categories           │
-      └──────────────────────┘
-
-The frontend does **not** directly implement the AI models.
-
-Instead, it acts as the intelligent interaction layer between the user, the AskDrip AI services, and the Dripzoid platform.
-
----
-
-# Core Design Philosophy
-
-AskDrip is built around several principles.
-
-### 1. Conversational First
-
-Users interact with AskDrip using natural language rather than complex forms.
-
-### 2. Specialized AI Modes
-
-Different fashion tasks can use different backend routes.
+Traditional fashion commerce generally starts with:
 
 ```text
-General Chat
-     │
-     ├── Outfit Generation
-     │
-     ├── Color Matching
-     │
-     └── Fashion Recommendations
+Category
+   ↓
+Filters
+   ↓
+Products
+   ↓
+User selects
 ```
 
-### 3. Persistent Conversations
+AskDrip explores a different interaction model:
 
-Conversations are stored through the Dripzoid API so users can return to previous sessions.
+```text
+User Intent
+     ↓
+Natural Language
+     ↓
+Fashion Intelligence
+     ↓
+Personalized Response
+     ↓
+Relevant Products
+```
 
-### 4. Product-Aware AI
+The long-term direction is to evolve AskDrip from a conversational assistant into an **AI fashion intelligence layer** connecting:
 
-AI responses can include actual Dripzoid products.
+```text
+User Intent
+      +
+Fashion Knowledge
+      +
+Personal Preferences
+      +
+Product Catalog
+      +
+Conversation History
+      +
+Visual Understanding
+      ↓
+Personalized Fashion Intelligence
+```
 
-The frontend renders these products as interactive recommendation cards.
+---
 
-### 5. Separation of Concerns
+# 🏗️ Architecture
 
-The frontend is responsible for:
+AskDrip follows a **frontend + AI backend + commerce backend** architecture. The frontend is intentionally separated from model infrastructure and acts as the interaction layer between the user, AI services, and the Dripzoid ecosystem. 
 
-* User interface
-* State management
+```text
+                              ┌──────────────────────┐
+                              │        USER          │
+                              │  Web / Mobile Web    │
+                              └──────────┬───────────┘
+                                         │
+                                         ▼
+                         ┌─────────────────────────────┐
+                         │      ASKDRIP FRONTEND       │
+                         │                             │
+                         │ React 19                   │
+                         │ Vite 8                     │
+                         │ Tailwind CSS 4             │
+                         │ Axios                      │
+                         │ React Context              │
+                         └──────────────┬──────────────┘
+                                        │
+                         ┌──────────────┴──────────────┐
+                         │                             │
+                         ▼                             ▼
+              ┌────────────────────┐        ┌────────────────────┐
+              │    DRIPZOID API    │        │  ASKDRIP BACKEND   │
+              │                    │        │                    │
+              │ Authentication     │        │ AI Chat            │
+              │ User Sessions      │        │ Outfit Generation  │
+              │ Conversations      │        │ Color Matching     │
+              │ Messages           │        │ Recommendations    │
+              │ User Data          │        │ AI Processing      │
+              └─────────┬──────────┘        └──────────┬─────────┘
+                        │                              │
+                        │                              ▼
+                        │                   ┌────────────────────┐
+                        │                   │ AI / Fashion Data  │
+                        │                   │                    │
+                        │                   │ Product Knowledge  │
+                        │                   │ Fashion Intelligence│
+                        │                   │ Recommendation Logic│
+                        │                   └────────────────────┘
+                        │
+                        ▼
+              ┌────────────────────┐
+              │ DRIPZOID COMMERCE  │
+              │                    │
+              │ Products           │
+              │ Images             │
+              │ Pricing            │
+              │ Categories         │
+              └────────────────────┘
+```
+
+### Architectural principle
+
+The browser **does not directly implement or expose AI model infrastructure**.
+
+Instead:
+
+```text
+Frontend
+   ↓
+API Layer
+   ↓
+AI Backend
+   ↓
+AI / Fashion Intelligence
+```
+
+while commerce-related information flows through the Dripzoid platform.
+
+---
+
+# 🧩 Core Design Principles
+
+## 1. Conversational First
+
+Users describe what they want naturally instead of navigating through complicated forms.
+
+## 2. Specialized AI
+
+Fashion tasks can be routed to specialized capabilities:
+
+```text
+                    AskDrip
+                       │
+        ┌──────────────┼──────────────┐
+        │              │              │
+        ▼              ▼              ▼
+   General Chat    Outfit AI     Color AI
+                                     
+                       │
+                       ▼
+                Recommendation AI
+```
+
+## 3. Persistent Conversations
+
+Users can return to previous conversations instead of starting from zero every time.
+
+## 4. Product-Aware Responses
+
+AI responses can include actual Dripzoid products, allowing conversational intelligence to connect directly with commerce.
+
+## 5. Separation of Concerns
+
+The frontend handles:
+
+* UI
+* Application state
 * Authentication state
 * Conversation state
 * API communication
-* Rendering AI responses
-* Rendering recommended products
+* AI response rendering
+* Product rendering
 
-The backend is responsible for:
+The backend handles:
 
 * AI inference
 * Fashion intelligence
 * Product retrieval
-* Conversation persistence
-* User data
-* Authentication
 * Business logic
+* Authentication
+* User data
+* Conversation persistence
+
+This separation is explicitly reflected in the existing architecture. 
 
 ---
 
-# Technology Stack
+# ⚙️ Technology Stack
 
-## Frontend
+| Technology           | Role                                     |
+| -------------------- | ---------------------------------------- |
+| **React 19**         | UI framework                             |
+| **Vite 8**           | Development and production build tooling |
+| **Tailwind CSS 4**   | Styling system                           |
+| **Axios**            | HTTP communication                       |
+| **React Markdown**   | AI response rendering                    |
+| **Lucide React**     | Interface icons                          |
+| **Framer Motion**    | Animation                                |
+| **React Context**    | Global application state                 |
+| **JavaScript / JSX** | Application development                  |
 
-| Technology       | Purpose                             |
-| ---------------- | ----------------------------------- |
-| React 19         | UI framework                        |
-| Vite 8           | Development server and build system |
-| Tailwind CSS 4   | Styling                             |
-| Axios            | HTTP communication                  |
-| Lucide React     | UI icons                            |
-| React Markdown   | Rendering AI responses              |
-| Framer Motion    | Animation support                   |
-| JavaScript / JSX | Application development             |
+The frontend technology stack and repository organization are documented in the current project README. 
 
 ---
 
-# Repository Structure
+# 📁 Project Structure
 
 ```text
 AskDrip-Frontend/
@@ -238,9 +306,9 @@ AskDrip-Frontend/
 
 ---
 
-# Application Architecture
+# 🧠 Application Architecture
 
-The application uses React Context to separate global application concerns.
+React Context is used to separate global application responsibilities.
 
 ```text
 React Application
@@ -256,17 +324,39 @@ React Application
 └── App
 ```
 
-This structure is initialized in:
+### State domains
 
 ```text
-src/main.jsx
-```
+AuthContext
+│
+├── User
+├── Session
+├── Authentication State
+└── Login / Logout
 
-The providers are layered intentionally because the application has dependencies between them.
+ConversationContext
+│
+├── Conversations
+├── Active Conversation
+├── Conversation Loading
+└── Sidebar State
+
+ChatContext
+│
+├── Messages
+├── AI Mode
+├── AI Endpoint
+├── Chat Loading
+└── AI Interaction
+
+ThemeContext
+│
+└── Light / Dark Theme
+```
 
 ---
 
-# 1. Authentication Architecture
+# 🔐 Authentication Architecture
 
 Authentication is managed through:
 
@@ -274,26 +364,16 @@ Authentication is managed through:
 src/context/AuthContext.jsx
 ```
 
-The frontend communicates with the main Dripzoid backend:
-
-```text
-https://api.dripzoid.com
-```
-
-The API client is configured with:
+The frontend communicates with the Dripzoid API and uses authenticated sessions with:
 
 ```javascript
 withCredentials: true
 ```
 
-This allows authenticated requests to use the Dripzoid session.
-
----
-
-## Authentication Flow
+### Authentication lifecycle
 
 ```text
-Application Starts
+Application Start
        │
        ▼
 AuthProvider
@@ -301,25 +381,18 @@ AuthProvider
        ▼
 GET /api/auth/me
        │
-       ├── Authenticated
-       │       │
-       │       ▼
-       │    Load User
-       │
-       ├── 401
-       │       │
-       │       ▼
-       │   Unauthenticated
-       │
-       └── Other Error
-               │
-               ▼
-          Error State
+       ├───────────────┐
+       │               │
+       ▼               ▼
+Authenticated      401 / Error
+       │               │
+       ▼               ▼
+Load User        Unauthenticated
 ```
 
-The authentication context exposes:
+The authentication context exposes functionality including:
 
-```javascript
+```text
 user
 setUser
 loading
@@ -333,9 +406,7 @@ restoreSession()
 
 ---
 
-# Authentication API
-
-The frontend uses the following Dripzoid authentication endpoints.
+# 🔑 Authentication API
 
 ### Login
 
@@ -343,7 +414,7 @@ The frontend uses the following Dripzoid authentication endpoints.
 POST /api/auth/login
 ```
 
-Request:
+Example request:
 
 ```json
 {
@@ -352,15 +423,11 @@ Request:
 }
 ```
 
----
-
 ### Current User
 
 ```http
 GET /api/auth/me
 ```
-
----
 
 ### Logout
 
@@ -370,57 +437,49 @@ POST /api/auth/logout
 
 ---
 
-# 2. Conversation Architecture
+# 💬 Conversation Architecture
 
-Conversation state is managed through:
+Conversation management is handled by:
 
 ```text
 src/context/ConversationContext.jsx
 ```
 
-The context handles:
+It manages:
 
-* Conversation list
+* Conversation history
 * Active conversation
-* Creating conversations
-* Selecting conversations
-* Deleting conversations
+* Conversation creation
+* Conversation selection
+* Conversation deletion
+* Conversation renaming
 * Sidebar state
 * Loading states
-* Starting new chats
+* New-chat initialization
 
----
-
-## Conversation Flow
+### Conversation lifecycle
 
 ```text
 User opens AskDrip
-        │
-        ▼
-GET conversations
-        │
-        ▼
+       │
+       ▼
+Load conversations
+       │
+       ▼
 ConversationContext
-        │
-        ▼
+       │
+       ▼
 Sidebar
-        │
-        ├── Select conversation
-        │
-        ├── Delete conversation
-        │
-        └── New conversation
+       │
+       ├── New conversation
+       ├── Select conversation
+       ├── Rename conversation
+       └── Delete conversation
 ```
 
 ---
 
-# Conversation API
-
-Conversation APIs are exposed through:
-
-```text
-https://api.dripzoid.com
-```
+# 🗂️ Conversation API
 
 ### Get conversations
 
@@ -428,15 +487,11 @@ https://api.dripzoid.com
 GET /api/v1/askdrip/conversations
 ```
 
----
-
 ### Create conversation
 
 ```http
 POST /api/v1/askdrip/conversations
 ```
-
-Request:
 
 ```json
 {
@@ -444,15 +499,11 @@ Request:
 }
 ```
 
----
-
 ### Get messages
 
 ```http
 GET /api/v1/askdrip/conversations/:conversationId/messages
 ```
-
----
 
 ### Delete conversation
 
@@ -460,15 +511,11 @@ GET /api/v1/askdrip/conversations/:conversationId/messages
 DELETE /api/v1/askdrip/conversations/:conversationId
 ```
 
----
-
 ### Rename conversation
 
 ```http
 PATCH /api/v1/askdrip/conversations/:conversationId
 ```
-
-Request:
 
 ```json
 {
@@ -478,80 +525,26 @@ Request:
 
 ---
 
-# 3. Chat Architecture
+# 🤖 AI Architecture
 
-Chat state is managed by:
-
-```text
-src/context/ChatContext.jsx
-```
-
-The ChatContext coordinates:
-
-* User messages
-* Assistant messages
-* Active conversation
-* AI endpoint selection
-* Loading state
-* Conversation creation
-* Message retrieval
-* AI responses
-
----
-
-# Message Lifecycle
-
-When a user sends a message:
+AskDrip currently exposes four logical AI capabilities:
 
 ```text
-User enters prompt
-       │
-       ▼
-ChatInput
-       │
-       ▼
-ChatContext.sendMessage()
-       │
-       ├── Display user message immediately
-       │
-       ├── Show typing indicator
-       │
-       ├── Create conversation if necessary
-       │
-       ▼
-AskDrip Backend
-       │
-       ▼
-AI Processing
-       │
-       ▼
-AI Response
-       │
-       ├── Response text
-       │
-       └── Product recommendations
-       │
-       ▼
-MessageBubble
-       │
-       ▼
-ProductCarousel
+                ASKDRIP AI
+                    │
+        ┌───────────┼───────────┐
+        │           │           │
+        ▼           ▼           ▼
+     General      Outfit      Color
+       Chat         AI         AI
+        │
+        └──────────────┐
+                       ▼
+                Recommendation
+                       AI
 ```
 
----
-
-# 4. AI Endpoint Architecture
-
-AskDrip currently supports four logical AI routes.
-
-```text
-/chat
-/outfit
-/color-match
-/recommendation
-```
-
-These routes are mapped inside:
+These are mapped through:
 
 ```text
 src/services/chatService.js
@@ -575,8 +568,6 @@ Used for general fashion conversations.
 POST /api/v1/outfit
 ```
 
-Designed for complete outfit generation.
-
 Example:
 
 ```text
@@ -590,8 +581,6 @@ Example:
 ```http
 POST /api/v1/color-match
 ```
-
-Designed for color coordination.
 
 Example:
 
@@ -607,8 +596,6 @@ Example:
 POST /api/v1/recommendation
 ```
 
-Designed for personalized fashion recommendations.
-
 Example:
 
 ```text
@@ -617,75 +604,99 @@ Example:
 
 ---
 
-# AI Request Structure
+# 🔄 AI Request Lifecycle
 
-The frontend sends:
-
-```json
-{
-  "userId": "USER_ID",
-  "conversationId": "CONVERSATION_ID",
-  "prompt": "Suggest an outfit for college"
-}
+```text
+                    USER
+                      │
+                      ▼
+                  ChatInput
+                      │
+                      ▼
+                 ChatContext
+                      │
+                      ▼
+                chatService
+                      │
+                      ▼
+                AskDrip API
+                      │
+                      ▼
+                AI Processing
+                      │
+              ┌───────┴────────┐
+              │                │
+              ▼                ▼
+         AI Response       Products
+              │                │
+              └───────┬────────┘
+                      ▼
+                 ChatContext
+                      │
+              ┌───────┴────────┐
+              │                │
+              ▼                ▼
+        MessageBubble    ProductCarousel
 ```
 
-The backend returns an AI response.
+---
 
-The frontend supports responses containing:
+# 📦 AI Response Contract
+
+The frontend supports structured AI responses containing text and products.
 
 ```json
 {
-  "response": "AI generated response",
+  "response": "Here is a suggested outfit...",
   "products": []
 }
 ```
 
----
+This allows AskDrip to move beyond a plain chatbot interface.
 
-# 5. Product Recommendation Architecture
-
-One of the important parts of AskDrip is the connection between AI responses and the Dripzoid commerce platform.
-
-The AI backend can return products alongside its response.
-
-The frontend passes those products to:
+Instead of:
 
 ```text
-ProductCarousel.jsx
+AI → Text
+```
+
+the system can support:
+
+```text
+AI
+├── Explanation
+├── Recommendations
+├── Products
+└── Commerce Actions
 ```
 
 ---
 
-## Product Flow
+# 🛍️ Product Intelligence
+
+One of the key architectural features of AskDrip is its connection between AI-generated responses and the Dripzoid product ecosystem.
 
 ```text
-User Prompt
+User Intent
      │
      ▼
 AI Backend
      │
+     ├── Understand request
      ├── Generate fashion response
-     │
      └── Identify relevant products
               │
               ▼
-       Product Data
+         Product Data
               │
               ▼
-      MessageBubble
+       ProductCarousel
               │
               ▼
-      ProductCarousel
-              │
-              ▼
-      Dripzoid Product
+       Dripzoid Commerce
 ```
 
----
-
-# Product Object
-
-The frontend expects product information similar to:
+A product can contain:
 
 ```json
 {
@@ -701,143 +712,94 @@ The frontend expects product information similar to:
 }
 ```
 
-The frontend automatically calculates the discount percentage when valid pricing data is available.
+The frontend also supports discount calculation when valid pricing information is provided.
 
 ---
 
-# Product Links
+# 🖥️ User Interface
 
-Recommended products link back to the Dripzoid commerce platform:
+The interface is composed of focused React components.
 
-```text
-https://dripzoid.com/product/:productId
-```
-
-This keeps AskDrip connected to the actual commerce layer rather than creating an isolated AI experience.
-
----
-
-# 6. Chat Interface
-
-The main chat interface is implemented through:
-
-```text
-ChatWindow.jsx
-```
-
-The interface supports:
-
-* Empty-state experience
-* Conversation messages
-* AI typing indicators
-* Markdown responses
-* Product recommendations
-* Quick prompts
-* Specialized AI modes
-* Auto-scrolling
+| Component         | Responsibility          |
+| ----------------- | ----------------------- |
+| `Header`          | Application navigation  |
+| `Sidebar`         | Conversation history    |
+| `ChatWindow`      | Main chat interface     |
+| `ChatInput`       | User prompt composition |
+| `MessageBubble`   | User/AI messages        |
+| `ProductCarousel` | Product recommendations |
+| `QuickActions`    | AI mode selection       |
+| `TypingIndicator` | AI processing state     |
 
 ---
 
-# Empty State
+# ⚡ Quick Actions
 
-When no conversation is active, AskDrip presents:
+Users can directly choose specialized AI capabilities:
 
 ```text
-AskDrip
-
-Your AI-powered fashion assistant.
-
-Discover outfits, color matches,
-styling advice, and fashion
-recommendations instantly.
++
+├── Outfit
+├── Color Match
+└── Recommendation
 ```
 
-It also provides quick access to:
-
-* Outfit Ideas
-* Color Matching
-* Recommendations
+This gives users an explicit way to guide the AI workflow.
 
 ---
 
-# Suggested Prompts
+# ✍️ Chat Experience
 
-The frontend provides example prompts such as:
+The chat composer supports:
 
-```text
-Suggest an outfit for college
-```
-
-```text
-Best colors with black cargo
-```
-
-```text
-Streetwear outfit under ₹3000
-```
-
-```text
-What shoes go with beige pants?
-```
-
-These are intended to reduce the initial friction for new users.
-
----
-
-# 7. Chat Input
-
-The chat composer is implemented through:
-
-```text
-ChatInput.jsx
-```
-
-Features include:
-
-* Multiline text input
+* Multiline input
 * Enter-to-send
-* Shift+Enter for multiline input
-* Send button
-* Loading state
-* Specialized mode selection
-* Responsive layout
+* Shift + Enter for multiline text
+* Send action
+* Loading states
+* Specialized modes
+* Responsive behavior
 * Auto-growing textarea
 
 ---
 
-# Specialized Actions
+# 🧾 AI Message Rendering
 
-The `+` action menu exposes:
+AI responses are rendered through:
 
 ```text
-Outfit
-Color Match
-Recommendation
+MessageBubble.jsx
 ```
 
-This allows the user to explicitly select the AI capability they want.
+Supported functionality includes:
+
+* User messages
+* Assistant messages
+* Markdown
+* Product recommendations
+* Copy interaction
+* Timestamps
+* Assistant controls
+
+Markdown rendering is provided through:
+
+```text
+react-markdown
+```
 
 ---
 
-# 8. Typing / AI Processing Experience
+# ⏳ AI Processing Experience
 
-AskDrip uses:
-
-```text
-TypingIndicator.jsx
-```
-
-Instead of showing a static:
+Instead of displaying a generic:
 
 ```text
-"Loading..."
+Loading...
 ```
 
-the interface provides contextual processing messages.
+AskDrip provides contextual processing states.
 
-For example:
-
-### General Chat
+### General
 
 ```text
 Analyzing your request...
@@ -853,7 +815,7 @@ Matching tops and bottoms...
 Building a stylish outfit...
 ```
 
-### Color Matching
+### Color
 
 ```text
 Finding matching colors...
@@ -869,104 +831,26 @@ Analyzing fashion preferences...
 Curating recommendations for you...
 ```
 
-For longer responses, the interface switches to slower-processing messages.
-
-This creates a more transparent conversational experience when AI inference takes time.
+This gives the user feedback while the AI service is processing.
 
 ---
 
-# 9. Message Rendering
-
-AI messages are rendered through:
-
-```text
-MessageBubble.jsx
-```
-
-The component supports:
-
-* User messages
-* Assistant messages
-* Markdown
-* Product recommendations
-* Copy action
-* Assistant interaction controls
-* Timestamps
-
-AI responses are rendered using:
-
-```text
-react-markdown
-```
-
-This allows the backend to return structured Markdown responses rather than plain text only.
-
----
-
-# 10. Sidebar
-
-The sidebar is implemented through:
-
-```text
-Sidebar.jsx
-```
-
-It provides:
-
-* Conversation history
-* Active conversation state
-* New chat
-* Conversation deletion
-* Sidebar collapse
-* Mobile sidebar behavior
-* Conversation selection
-
-The collapsed state is persisted locally using:
-
-```text
-localStorage
-```
-
-with the key:
-
-```text
-askdrip_sidebar_collapsed
-```
-
----
-
-# 11. Theme Architecture
+# 🎨 Theme System
 
 AskDrip supports:
 
 ```text
-Light Mode
-Dark Mode
+☀️ Light Mode
+🌙 Dark Mode
 ```
 
 Theme state is managed through:
 
 ```text
-ThemeContext.jsx
+src/context/ThemeContext.jsx
 ```
 
-The selected theme is stored in:
-
-```text
-localStorage
-```
-
-using:
-
-```text
-theme
-```
-
-The application applies the Tailwind dark class to the root document.
-
----
-
-# Theme Tokens
+The preference is persisted locally.
 
 The main theme variables are defined in:
 
@@ -974,49 +858,15 @@ The main theme variables are defined in:
 src/index.css
 ```
 
-Light theme:
-
-```css
-:root {
-  --background: 255 255 255;
-  --foreground: 0 0 0;
-
-  --card: 255 255 255;
-  --card-foreground: 0 0 0;
-
-  --border: 229 229 229;
-  --muted: 245 245 245;
-  --muted-foreground: 115 115 115;
-}
-```
-
-Dark theme:
-
-```css
-.dark {
-  --background: 0 0 0;
-  --foreground: 255 255 255;
-
-  --card: 10 10 10;
-  --card-foreground: 255 255 255;
-
-  --border: 38 38 38;
-  --muted: 23 23 23;
-  --muted-foreground: 163 163 163;
-}
-```
-
-The visual system intentionally uses a minimal monochrome aesthetic.
+The visual system intentionally follows a minimal monochrome design language.
 
 ---
 
-# 12. API Layer
+# 🔌 API Architecture
 
-AskDrip uses two Axios clients.
+AskDrip uses two primary Axios clients.
 
-## AskDrip API
-
-Located at:
+## AskDrip AI API
 
 ```text
 src/services/api.js
@@ -1028,18 +878,16 @@ Base URL:
 https://askdrip-backend.onrender.com/api/v1
 ```
 
-Used for:
+Responsibilities:
 
-* AI chat
-* Outfit generation
-* Color matching
-* Recommendations
-
----
+```text
+AI Chat
+Outfit Generation
+Color Matching
+Recommendations
+```
 
 ## Dripzoid API
-
-Located at:
 
 ```text
 src/services/dripzoidApi.js
@@ -1051,29 +899,26 @@ Base URL:
 https://api.dripzoid.com
 ```
 
-Configured with:
+Responsibilities:
 
-```javascript
-withCredentials: true
+```text
+Authentication
+Sessions
+Users
+Conversations
+Messages
+Conversation Management
 ```
-
-Used for:
-
-* Authentication
-* User sessions
-* Conversations
-* Messages
-* Conversation management
 
 ---
 
-# 13. Service Layer
+# 🧱 Service Layer
 
-The application separates HTTP communication from UI components.
+The frontend separates API communication from presentation logic.
 
 ```text
-services/
-│
+src/services/
+
 ├── api.js
 ├── authService.js
 ├── chatService.js
@@ -1081,285 +926,158 @@ services/
 └── dripzoidApi.js
 ```
 
-This prevents React components from directly containing API implementation details.
-
----
-
-# Service Responsibilities
-
 ### `api.js`
 
-Creates the Axios client for AskDrip AI services.
+AskDrip AI API client.
 
 ### `dripzoidApi.js`
 
-Creates the authenticated Dripzoid API client.
+Authenticated Dripzoid API client.
 
 ### `authService.js`
 
-Handles:
-
-* Login
-* Current user
-* Logout
-
-### `conversationService.js`
-
-Handles:
-
-* Get conversations
-* Create conversation
-* Get messages
-* Delete conversation
-* Rename conversation
+Authentication operations.
 
 ### `chatService.js`
 
-Handles:
+AI operations.
 
-* General chat
-* Outfit requests
-* Color matching
-* Recommendations
+### `conversationService.js`
+
+Conversation persistence operations.
+
+This service-oriented approach reduces coupling between UI components and backend APIs.
 
 ---
 
-# 14. State Management
+# 🔐 Security Model
 
-AskDrip currently uses React Context rather than an external state-management library.
+The frontend is intentionally designed without AI model credentials or private infrastructure secrets.
 
 ```text
-AuthContext
-     │
-     ├── User
-     ├── Session
-     └── Authentication state
-
-ConversationContext
-     │
-     ├── Conversations
-     ├── Active conversation
-     ├── Sidebar state
-     └── Conversation loading
-
-ChatContext
-     │
-     ├── Messages
-     ├── AI endpoint
-     ├── Chat loading
-     └── AI interaction
-
-ThemeContext
-     │
-     └── Light / Dark theme
+Browser
+   │
+   ▼
+Public APIs
+   │
+   ▼
+Backend
+   │
+   ├── Authentication
+   ├── Business Logic
+   ├── AI Infrastructure
+   ├── Database
+   └── Private Credentials
 ```
 
-This keeps the current application relatively lightweight while providing centralized state where needed.
+### Important principle
 
----
+Private credentials should remain **server-side**.
 
-# 15. Frontend Data Flow
-
-The overall request flow is:
+Never expose credentials such as:
 
 ```text
-                    USER
-                      │
-                      ▼
-                ChatInput
-                      │
-                      ▼
-               ChatContext
-                      │
-                      ▼
-              chatService.js
-                      │
-                      ▼
-              AskDrip Backend
-                      │
-             ┌────────┴────────┐
-             │                 │
-             ▼                 ▼
-        AI Response        Products
-             │                 │
-             └────────┬────────┘
-                      ▼
-                ChatContext
-                      │
-                      ▼
-               MessageBubble
-                      │
-                      ▼
-              ProductCarousel
+AI API keys
+Database passwords
+JWT signing secrets
+Cloud credentials
+Private service tokens
 ```
 
-Conversation persistence operates independently through:
+inside a Vite frontend.
 
-```text
-ConversationContext
-        │
-        ▼
-conversationService.js
-        │
-        ▼
-Dripzoid API
-```
+Environment variables prefixed with `VITE_` are intended for browser-visible configuration and **must not be treated as secrets**.
 
 ---
 
-# 16. Authentication + AI Interaction
+# 🌍 Environment Configuration
 
-AskDrip separates authentication from AI inference.
-
-```text
-                User
-                 │
-                 ▼
-        Dripzoid Authentication
-                 │
-                 ▼
-          Authenticated User
-                 │
-                 ▼
-             AskDrip UI
-                 │
-                 ▼
-          AI Request
-                 │
-                 ▼
-        AskDrip AI Backend
-```
-
-This architecture allows the AI service and commerce platform to evolve independently.
-
----
-
-# 17. Error Handling
-
-The frontend handles several classes of errors.
-
-### Authentication Errors
-
-If the Dripzoid API returns:
-
-```http
-401 Unauthorized
-```
-
-the application treats the user as unauthenticated.
-
----
-
-### Conversation Errors
-
-Conversation API failures are logged and the UI avoids crashing the application.
-
----
-
-### AI Errors
-
-If the AskDrip backend cannot be reached, the user receives:
-
-```text
-Unable to connect to AskDrip
-```
-
-or the backend-provided error message when available.
-
----
-
-# 18. Responsive Design
-
-AskDrip is designed for:
-
-* Desktop
-* Tablet
-* Mobile browsers
-
-The interface includes responsive behavior for:
-
-* Sidebar
-* Chat layout
-* Product carousel
-* Input area
-* Conversation history
-* Mobile navigation
-
----
-
-# 19. UI Components
-
-| Component         | Responsibility                      |
-| ----------------- | ----------------------------------- |
-| `Header`          | Application header and navigation   |
-| `Sidebar`         | Conversation history and navigation |
-| `ChatWindow`      | Main conversational interface       |
-| `ChatInput`       | User prompt input                   |
-| `MessageBubble`   | User/AI message rendering           |
-| `ProductCarousel` | AI product recommendations          |
-| `QuickActions`    | Specialized AI modes                |
-| `TypingIndicator` | AI processing state                 |
-
----
-
-# 20. Security Considerations
-
-The frontend does not contain AI credentials or model secrets.
-
-AI processing is performed server-side.
-
-The frontend communicates with:
-
-```text
-Dripzoid API
-AskDrip Backend
-```
-
-rather than directly exposing model infrastructure to the browser.
-
-Authentication uses the Dripzoid backend session mechanism.
-
-Sensitive backend credentials should remain server-side.
-
----
-
-# 21. Environment Configuration
-
-The current repository uses configured backend URLs in the API service files.
-
-For production-scale deployment, these endpoints can be migrated to environment variables.
-
-Recommended structure:
-
-```env
-VITE_DRIPZOID_API_URL=
-VITE_ASKDRIP_API_URL=
-```
-
-Example:
+For deployment flexibility, API URLs can be configured through environment variables.
 
 ```env
 VITE_DRIPZOID_API_URL=https://api.dripzoid.com
 VITE_ASKDRIP_API_URL=https://askdrip-backend.onrender.com/api/v1
 ```
 
-The frontend should never contain private API keys or model credentials.
+Recommended local configuration:
+
+```text
+.env
+.env.local
+```
+
+These files should not be committed when they contain sensitive values.
+
+A public repository can provide:
+
+```text
+.env.example
+```
+
+with non-sensitive configuration placeholders.
 
 ---
 
-# 22. Local Development
+# 🛡️ Backend Authorization Requirements
+
+The frontend may send identifiers such as:
+
+```json
+{
+  "userId": "USER_ID",
+  "conversationId": "CONVERSATION_ID",
+  "prompt": "..."
+}
+```
+
+These identifiers should **not be treated as proof of authorization by the backend**.
+
+The backend should derive the authenticated user from the active session and verify ownership before allowing operations such as:
+
+```text
+Read conversation
+Read messages
+Rename conversation
+Delete conversation
+Send messages
+Access user data
+```
+
+This keeps authorization server-side rather than relying on browser-controlled values.
+
+---
+
+# 📱 Responsive Architecture
+
+AskDrip is designed for:
+
+```text
+Desktop
+Tablet
+Mobile Browser
+```
+
+Responsive behavior covers:
+
+* Sidebar
+* Chat layout
+* Product carousel
+* Input area
+* Conversation history
+* Navigation
+* Mobile sidebar interactions
+
+---
+
+# 🚀 Local Development
 
 ## Requirements
-
-Recommended:
 
 ```text
 Node.js
 npm
 Git
 ```
-
----
 
 ## Clone
 
@@ -1368,15 +1086,11 @@ git clone <repository-url>
 cd AskDrip-Frontend
 ```
 
----
-
-## Install dependencies
+## Install
 
 ```bash
 npm install
 ```
-
----
 
 ## Start development server
 
@@ -1384,27 +1098,21 @@ npm install
 npm run dev
 ```
 
-Vite will start the development server.
-
 ---
 
-# 23. Production Build
-
-Build the application:
+# 🏭 Production Build
 
 ```bash
 npm run build
 ```
 
-The production output is generated in:
+Production output:
 
 ```text
 dist/
 ```
 
----
-
-# 24. Preview Production Build
+Preview the production build:
 
 ```bash
 npm run preview
@@ -1412,9 +1120,7 @@ npm run preview
 
 ---
 
-# 25. Linting
-
-Run ESLint:
+# 🧹 Linting
 
 ```bash
 npm run lint
@@ -1422,60 +1128,40 @@ npm run lint
 
 ---
 
-# 26. Build Pipeline
+# 🚢 Deployment Model
 
-The frontend uses Vite for production builds.
+AskDrip is designed so the frontend and backend can be deployed independently.
 
 ```text
-Source Code
-    │
-    ▼
-Vite
-    │
-    ├── React compilation
-    ├── Tailwind processing
-    ├── Asset processing
-    └── JavaScript bundling
-    │
-    ▼
-dist/
+                         INTERNET
+                            │
+                            ▼
+                    ASKDRIP FRONTEND
+                            │
+             ┌──────────────┴──────────────┐
+             │                             │
+             ▼                             ▼
+       DRIPZOID API                  ASKDRIP BACKEND
+             │                             │
+             │                             ├── AI Processing
+             │                             ├── Recommendations
+             │                             └── Fashion Logic
+             │
+             ├── Authentication
+             ├── Conversations
+             └── User Data
+                            │
+                            ▼
+                    DRIPZOID ECOSYSTEM
 ```
+
+This separation allows the frontend, AI services, and commerce platform to evolve independently.
 
 ---
 
-# 27. Deployment Architecture
+# 🔬 Current Interaction Model
 
-The frontend can be deployed independently from the backend.
-
-```text
-                   Internet
-                      │
-                      ▼
-              AskDrip Frontend
-                      │
-        ┌─────────────┴─────────────┐
-        │                           │
-        ▼                           ▼
- Dripzoid API                AskDrip Backend
-        │                           │
-        ▼                           ▼
- Authentication               AI Processing
- Conversations               Recommendations
- User Data                   Fashion Logic
-        │                           │
-        └─────────────┬─────────────┘
-                      │
-                      ▼
-                Dripzoid Platform
-```
-
-This allows frontend deployments without requiring AI backend deployments and vice versa.
-
----
-
-# 28. Current AI Interaction Model
-
-AskDrip currently follows a request/response architecture.
+The current AI interaction follows a request/response architecture:
 
 ```text
 Prompt
@@ -1496,60 +1182,63 @@ HTTP Response
 Frontend Rendering
 ```
 
-This makes the architecture relatively simple and allows the AI backend to evolve independently.
+The architecture can later evolve toward streaming and multimodal interactions without requiring a complete frontend rewrite.
 
 ---
 
-# 29. Future Architecture Opportunities
+# 🔮 Future Architecture
 
-The current architecture provides a foundation for additional AI capabilities.
+The current system provides a foundation for several possible extensions.
 
-Potential extensions include:
-
-### Multimodal Fashion Understanding
+## Multimodal Fashion Intelligence
 
 ```text
-Image Upload
-     │
-     ▼
+Image
+  │
+  ▼
 Visual Understanding
-     │
-     ▼
+  │
+  ▼
 Fashion Analysis
-     │
-     ▼
-Recommendations
+  │
+  ├── Clothing Detection
+  ├── Color Analysis
+  ├── Style Analysis
+  └── Outfit Suggestions
+  │
+  ▼
+Product Recommendations
 ```
 
-Possible use cases:
+Potential user experience:
 
-* Upload an outfit
-* Analyze clothing items
-* Identify colors
-* Suggest improvements
-* Find similar Dripzoid products
+> Upload an outfit → AskDrip understands it → identifies clothing → suggests improvements → finds relevant products.
 
 ---
 
-### Personalized Fashion Profiles
+# 👤 Personalized Fashion Profiles
+
+Future personalization could combine:
 
 ```text
 User
  │
  ├── Preferences
- ├── Previous conversations
- ├── Favorite styles
+ ├── Previous Conversations
+ ├── Favorite Styles
  ├── Budget
  ├── Sizes
- └── Purchase history
+ └── Purchase History
         │
         ▼
-Personalized AI
+Personalized Fashion Intelligence
 ```
 
 ---
 
-### Recommendation Feedback Loop
+# 🔁 Recommendation Feedback Loop
+
+A future recommendation engine can learn from user interactions:
 
 ```text
 Recommendation
@@ -1557,6 +1246,7 @@ Recommendation
       ▼
 User Interaction
       │
+      ├── View
       ├── Click
       ├── Save
       ├── Purchase
@@ -1566,117 +1256,187 @@ User Interaction
 Preference Signal
       │
       ▼
-Improved Recommendations
+Improved Personalization
 ```
 
 ---
 
-### Multimodal AI
+# 🎙️ Multimodal & Voice Direction
 
-Future versions can expand from text-only fashion assistance toward:
+The architecture can eventually expand beyond text:
 
 ```text
-Text
-Image
-Product Catalog
-User Preferences
-Conversation History
-        │
-        ▼
-    Fashion AI
-        │
-        ▼
-Personalized Result
+                 USER
+                  │
+       ┌──────────┼──────────┐
+       │          │          │
+       ▼          ▼          ▼
+      Text       Image      Voice
+       │          │          │
+       └──────────┼──────────┘
+                  ▼
+             Fashion AI
+                  │
+                  ▼
+       Personalized Experience
 ```
 
 ---
 
-# 30. Architectural Strengths
+# 🧠 Architectural Decisions
 
-The current implementation intentionally separates the main system concerns:
+## React Context
+
+The current application uses React Context rather than introducing a larger external state-management system.
+
+This keeps the state model lightweight while separating:
 
 ```text
-Presentation
-     │
-     ▼
-React Components
-     │
-     ▼
-Application State
-     │
-     ▼
-Service Layer
-     │
-     ▼
-Backend APIs
-     │
-     ▼
-AI / Commerce Infrastructure
+Authentication
+Conversations
+Chat
+Theme
 ```
 
-This separation makes individual layers easier to evolve.
+---
 
-For example:
+## Service-Oriented API Layer
 
-* UI can change without rewriting AI logic.
-* AI models can change without rewriting the UI.
-* Authentication can evolve independently.
-* Product recommendation logic can become more sophisticated without changing the chat interface.
-* New AI endpoints can be introduced without redesigning the entire application.
+API requests are isolated into service modules.
+
+Instead of:
+
+```text
+Component
+   ↓
+Direct API Request
+```
+
+the application follows:
+
+```text
+Component
+   ↓
+Context
+   ↓
+Service
+   ↓
+API
+```
+
+This makes backend contract changes easier to isolate.
 
 ---
 
-# 31. Engineering Decisions
-
-### React Context instead of Redux
-
-The application currently has a relatively focused global state model.
-
-React Context is sufficient for:
-
-* Authentication
-* Conversations
-* Chat
-* Theme
-
-An external state library can be introduced if application complexity grows.
-
----
-
-### Service Layer
-
-API calls are isolated into service modules rather than being embedded throughout components.
-
-This improves maintainability and allows API contracts to change with less UI coupling.
-
----
-
-### Backend AI Separation
+## Backend AI Separation
 
 The browser does not directly communicate with model infrastructure.
 
 This keeps:
 
-* AI infrastructure
-* model configuration
-* inference logic
-* private credentials
+* Model configuration
+* Inference logic
+* AI credentials
+* Backend infrastructure
 
-on the server side.
-
----
-
-### Product-Aware Responses
-
-AI responses are not restricted to plain text.
-
-The response contract can include structured product data, allowing the frontend to render commerce components alongside natural-language responses.
+server-side.
 
 ---
 
-# 32. Project Relationship
+## Structured AI Responses
 
-AskDrip is part of the broader **Dripzoid technology ecosystem**.
+AskDrip is not limited to:
+
+```text
+AI → Text
+```
+
+The response architecture can support:
+
+```text
+AI
+├── Text
+├── Products
+├── Recommendations
+└── Future structured actions
+```
+
+This is important for connecting conversational AI with commerce.
+
+---
+
+# 📊 Current Capabilities
+
+| Capability                 | Status |
+| -------------------------- | ------ |
+| React application          | ✅      |
+| Vite build pipeline        | ✅      |
+| Tailwind CSS               | ✅      |
+| Authentication integration | ✅      |
+| Session restoration        | ✅      |
+| Conversation persistence   | ✅      |
+| Conversation selection     | ✅      |
+| Conversation deletion      | ✅      |
+| General AI chat            | ✅      |
+| Outfit mode                | ✅      |
+| Color matching             | ✅      |
+| Recommendation mode        | ✅      |
+| Markdown responses         | ✅      |
+| Product cards              | ✅      |
+| Product links              | ✅      |
+| Responsive UI              | ✅      |
+| Light mode                 | ✅      |
+| Dark mode                  | ✅      |
+| AI processing states       | ✅      |
+| Quick actions              | ✅      |
+| Mobile sidebar             | ✅      |
+
+These capabilities reflect the current frontend status documented in the repository. 
+
+---
+
+# 🗺️ Roadmap
+
+The architecture is intentionally positioned for future expansion.
+
+### AI & Personalization
+
+* [ ] Multimodal image-based fashion analysis
+* [ ] AI-powered wardrobe analysis
+* [ ] Personalized fashion profiles
+* [ ] Advanced recommendation ranking
+* [ ] User preference learning
+
+### Commerce
+
+* [ ] Saved outfits
+* [ ] Outfit boards
+* [ ] Product wishlists
+* [ ] Richer product explanations
+* [ ] Recommendation feedback loops
+
+### Interaction
+
+* [ ] Voice interaction
+* [ ] Streaming AI responses
+* [ ] Multimodal conversations
+
+### Platform
+
+* [ ] Improved observability
+* [ ] Automated API contract validation
+* [ ] Production environment configuration
+* [ ] Advanced analytics
+
+The current repository already identifies these areas as potential future development directions. 
+
+---
+
+# 🔗 Relationship With Dripzoid
+
+AskDrip is not an isolated chatbot.
+
+It is an AI layer within the broader **Dripzoid technology ecosystem**.
 
 ```text
                          DRIPZOID
@@ -1684,164 +1444,167 @@ AskDrip is part of the broader **Dripzoid technology ecosystem**.
           ┌─────────────────┼─────────────────┐
           │                 │                 │
           ▼                 ▼                 ▼
-      Commerce           AskDrip          Platform APIs
-          │                 │
-          │                 ▼
-          │             Fashion AI
-          │
-          └──────────────┐
-                         ▼
-                 Product Intelligence
+      Commerce           AskDrip        Platform APIs
+                            │
+                            ▼
+                      Fashion AI
+                            │
+                            ▼
+                  Product Intelligence
 ```
 
-AskDrip provides the AI interaction layer while Dripzoid provides the underlying fashion commerce ecosystem.
+Dripzoid provides the commerce ecosystem while AskDrip provides the conversational AI interaction layer.
 
 ---
 
-# 33. Vision
+# 🧭 Long-Term Direction
 
-The long-term direction is to evolve AskDrip from a conversational fashion chatbot into a broader **AI fashion intelligence layer**.
+The broader goal is to make fashion discovery more **intent-driven**.
 
-The goal is to connect:
+Instead of asking:
+
+> "Which category should I search?"
+
+the user should eventually be able to say:
+
+> "I'm going to a college event tonight. I want something minimal, comfortable, and under ₹3,000."
+
+The system can then combine:
 
 ```text
-User Intent
-     +
-Fashion Knowledge
-     +
+Intent
++
+Context
++
 Personal Preferences
-     +
++
+Fashion Knowledge
++
 Product Catalog
-     +
-Visual Understanding
-     +
++
 Conversation History
-     ↓
-Personalized Fashion Intelligence
 ```
 
-This creates a system where users can describe what they want naturally and receive context-aware fashion assistance rather than manually searching through a catalog.
+to produce a personalized result.
+
+That is the direction behind AskDrip's architecture.
 
 ---
 
-# 34. Status
+# 🧪 Engineering Philosophy
 
-Current frontend capabilities include:
+AskDrip is designed as a **modular AI product**, not merely a chatbot UI.
 
-* [x] React application
-* [x] Vite development/build pipeline
-* [x] Tailwind CSS
-* [x] Dripzoid authentication integration
-* [x] Session restoration
-* [x] Conversation persistence
-* [x] Conversation selection
-* [x] Conversation deletion
-* [x] General AI chat
-* [x] Outfit mode
-* [x] Color matching mode
-* [x] Recommendation mode
-* [x] Markdown AI responses
-* [x] Product recommendation cards
-* [x] Product links
-* [x] Responsive interface
-* [x] Dark mode
-* [x] Light mode
-* [x] AI typing states
-* [x] Quick actions
-* [x] Mobile sidebar behavior
-
----
-
-# 35. Future Roadmap
-
-Potential development areas:
-
-* [ ] Multimodal image-based fashion analysis
-* [ ] AI-powered wardrobe analysis
-* [ ] Personalized fashion profiles
-* [ ] Advanced recommendation ranking
-* [ ] User preference learning
-* [ ] Saved outfits
-* [ ] Outfit boards
-* [ ] Product wishlists
-* [ ] Voice interaction
-* [ ] Richer product explanations
-* [ ] Streaming AI responses
-* [ ] Improved observability
-* [ ] Automated API contract validation
-* [ ] Production environment configuration
-* [ ] Advanced analytics
-* [ ] Recommendation feedback loops
-
----
-
-# 36. Development Philosophy
-
-AskDrip is designed as a modular AI product rather than a single-purpose chatbot.
-
-The architecture intentionally separates:
+The architecture separates:
 
 ```text
-UI
-│
-├── Components
-├── Context
-└── Pages
-
-API
-│
-├── Authentication
-├── Conversations
-└── AI Services
-
-AI
-│
-├── General Chat
-├── Outfit Intelligence
-├── Color Intelligence
-└── Recommendation Intelligence
-
-Commerce
-│
-└── Dripzoid Product Ecosystem
+                    ASKDRIP
+                       │
+        ┌──────────────┼──────────────┐
+        │              │              │
+        ▼              ▼              ▼
+        UI             API            AI
+        │              │              │
+    Components     Services       AI Modes
+    Context        Auth           Fashion Logic
+    Pages          Conversations  Recommendations
+        │              │              │
+        └──────────────┼──────────────┘
+                       │
+                       ▼
+                  COMMERCE
+                       │
+                       ▼
+                Dripzoid Platform
 ```
 
-This structure provides a foundation for expanding AskDrip into a larger AI-powered fashion platform.
+This allows individual layers to evolve independently.
+
+For example:
+
+* UI can evolve without rewriting AI logic.
+* AI models can change without redesigning the UI.
+* Authentication can evolve independently.
+* Recommendation logic can become more sophisticated.
+* New AI capabilities can be added as new service contracts.
+* Commerce integrations can evolve independently of the conversation interface.
 
 ---
 
-# 37. Author
+# 👨‍💻 Author
 
 **Yuvateja Sainadh Kasukurthi**
 
-Applied AI Engineer & Systems Architect
-Co-Founder & Full-Stack Developer — Dripzoid
+**Applied AI Engineer & Systems Architect**
+**Co-Founder & Full-Stack Developer — Dripzoid**
 
-Projects:
+### Selected Projects
 
-* AskDrip
-* Dripzoid
-* VoiceShield
+* **AskDrip** — AI Fashion Assistant
+* **Dripzoid** — Fashion Commerce Platform
+* **VoiceShield** — Real-Time AI Voice Impersonation Detection Framework
 
 ---
 
-# License
+# 📌 Repository Scope
 
-This project is part of the Dripzoid technology ecosystem.
+This repository contains the **AskDrip frontend application**.
+
+It documents:
+
+```text
+UI Architecture
+State Management
+API Integration
+Authentication Integration
+Conversation Architecture
+AI Service Contracts
+Product Rendering
+Frontend Deployment
+```
+
+The internal implementation of AI models, private infrastructure, databases, and backend credentials is intentionally kept outside the frontend repository.
+
+---
+
+# 🔒 Security
+
+Please do not commit:
+
+```text
+.env
+.env.local
+.env.production
+Private API keys
+Database credentials
+JWT secrets
+Cloud credentials
+Private service tokens
+SSH/private keys
+```
+
+Public frontend configuration should contain only values that are safe to expose to a browser.
+
+If you discover a security issue, report it privately to the project maintainers rather than publishing credentials or exploit details.
+
+---
+
+# 📄 License
+
+This project is part of the **Dripzoid technology ecosystem**.
 
 All rights reserved unless otherwise specified by the repository owner.
 
-```
+---
 
-### One important improvement before you send it to her
+<p align="center">
+  <strong>AskDrip — Talk to your fashion.</strong>
+</p>
 
-I would **not call this README "the full architecture" without qualification**. This repository is specifically the **AskDrip frontend**. The README can document the frontend architecture and the backend interfaces it consumes, but it does not expose the internal AI/backend implementation.
+<p align="center">
+  Built with AI · React · Fashion Intelligence · Dripzoid
+</p>
 
-For a co-founder conversation, that's actually a good thing. It communicates:
+---
 
-**Frontend → API contracts → AI backend → Dripzoid commerce**
-
-without dumping private backend implementation details into a public repository.
-
-Also, I noticed the current README is still the default **React + Vite template**, while the actual project has already evolved substantially. Replacing it with the above will make the repository much more representative of what you've built.
-```
+For the **Chaya/co-founder conversation**, I would use this version in the public repository. It gives a technically capable person enough information to understand the system without exposing your backend implementation or credentials.
