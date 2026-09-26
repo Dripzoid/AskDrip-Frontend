@@ -1,7 +1,7 @@
 # AskDrip — AI Fashion Assistant
 
 <p align="center">
-  <img src="./public/logo-light.png" alt="AskDrip" width="180" />
+  <img src="./public/logo-dark.png" alt="AskDrip" width="180" />
 </p>
 
 <p align="center">
